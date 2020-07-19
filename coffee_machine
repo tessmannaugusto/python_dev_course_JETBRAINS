@@ -1,0 +1,86 @@
+qty_water = 400
+qty_milk = 540
+qty_beans = 120
+qty_cups = 9
+qty_money = 550
+
+
+def current_state():
+    print("The coffee machine has:")
+    print(qty_water, "of water")
+    print(qty_milk, "of milk")
+    print(qty_beans, "of coffee beans")
+    print(qty_cups, "of disposable cups")
+    print(qty_money, "of money")
+
+def buy(option):
+    water_espresso = 250
+    beans_espresso = 16
+    money_espresso = 4
+
+    water_latte = 350
+    milk_latte = 75
+    beans_latte = 20
+    money_latte = 7
+    
+    water_capuccino = 200
+    milk_capuccino = 100
+    beans_capuccino = 12
+    money_capuccino = 6
+    
+    global qty_water, qty_milk, qty_beans, qty_cups, qty_money
+    
+    cups_espresso = min([qty_water / water_espresso, qty_beans / beans_espresso, qty_cups / 1])
+    cups_latte = min([qty_water / water_latte, qty_milk / milk_latte, qty_beans / beans_latte, qty_cups / 1])
+    cups_capuccino = min([qty_water / water_latte, qty_milk / milk_latte, qty_beans / beans_latte, qty_cups / 1])
+    
+    
+    if option == "1" and cups_espresso >= 1:
+        qty_water -= water_espresso
+        qty_beans -= beans_espresso
+        qty_cups -= 1
+        qty_money += money_espresso
+    elif option == "2" and cups_latte >= 1:
+        qty_water -= water_latte
+        qty_milk -= milk_latte
+        qty_beans -= beans_latte
+        qty_cups -= 1
+        qty_money += money_latte
+    elif option == "3" and cups_capuccino >= 1:
+        qty_water -= water_capuccino
+        qty_milk -= milk_capuccino
+        qty_beans -= beans_capuccino
+        qty_cups -= 1
+        qty_money += money_capuccino   
+    elif option == "back":
+       return  
+
+def fill(water, milk, beans, cups):
+    global qty_water, qty_milk, qty_beans, qty_cups
+    qty_water += water
+    qty_milk += milk
+    qty_beans += beans
+    qty_cups += cups
+    
+def take():
+    global qty_money
+    print("I gave you $",qty_money)
+    qty_money = 0
+    
+while True:
+    answer_action = input("Write action (buy, fill, take, remaining, exit):")
+    if answer_action == "take":
+        take()
+    elif answer_action == "fill":
+        add_water = int(input("Write how many ml of water do you want to add:"))
+        add_milk = int(input("Write how many ml of milk do you want to add:"))
+        add_beans = int(input("Write how many grams of coffee beans do you want to add:"))
+        add_cups = int(input("Write how many disposable cups of coffee do you want to add:"))
+        fill(add_water, add_milk, add_beans, add_cups)
+    elif answer_action == "buy":
+        answer_option = input("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:")
+        buy(answer_option)
+    elif answer_action == "remaining":
+        current_state()
+    elif answer_action == "exit":
+        break
