@@ -1,0 +1,66 @@
+import random
+
+def start_game():
+    word_list = ['python', 'java', 'kotlin', 'javascript']
+    chosen_word = random.choice(word_list)
+    chosen_word_set = set(chosen_word)
+    hifen_word = list("-" * len(chosen_word))
+    
+    print("H A N G M A N")
+    
+    while True:
+        menu = input('Type "play" to play the game, "exit" to quit:')
+        tries = 8
+        guesses = set()
+        if menu == "play":
+            while tries > 0:
+                is_checked = True
+                print("")
+                print("".join(hifen_word))
+                
+                guess = input("Input a letter:")
+                if len(guess) > 1:
+                    print("You should input a single letter")
+                    is_checked = False
+                elif guess.islower() == False:
+                    print("It is not an ASCII lowercase letter")
+                    is_checked = False
+                elif guess in guesses:
+                    print("You already typed this letter")
+                    is_checked = False
+                if is_checked == True:
+                    if guess in chosen_word_set and chosen_word.count(guess) > 1:
+                        index = 0
+                        if "-" not in hifen_word:
+                            print("You guessed the word")
+                            print("You survived!")
+                            tries = 0
+                            break
+                        while index < len(chosen_word):
+                            index = chosen_word.find(guess, index)
+                            if index == -1:
+                                break
+                            hifen_word[index] = guess
+                            index += 1
+                        guesses.add(guess)
+                                         elif guess in chosen_word:
+                        index = chosen_word.find(guess)
+                        hifen_word[index] = guess
+                        if "-" not in hifen_word:
+                            print("You guessed the word")
+                            print("You survived!")
+                            break
+                        guesses.add(guess)
+                    else:
+                        if is_checked == True:
+                            print("No such letter in the word")
+                            tries -= 1
+                            guesses.add(guess)
+            if tries < 1 and "-" in hifen_word:
+                print("You are hanged!")
+            elif "-" not in hifen_word:
+                        print("You guessed the word")
+                        print("You survived!")
+        else:
+            break   
+start_game()
